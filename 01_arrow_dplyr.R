@@ -7,6 +7,8 @@ library(dplyr)
 # convert to an Arrow table for this demo
 the_office <- open_dataset("data/transcripts")
 
+the_office
+
 # which character has the most lines in the show?
 the_office %>%
   group_by(character) %>%
@@ -15,7 +17,7 @@ the_office %>%
   collect()
 
 # in which episodes are beets mentioned?
-beets <- office_table %>%
+beets <- the_office %>%
   filter(str_detect(text, "beets"))
 
 # this is an in-memory dataset
