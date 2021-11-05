@@ -1,15 +1,14 @@
 library(arrow)
 library(dplyr)
-library(schrute)
 
 # dataset - transcripts from The Office (US version)
 ?schrute::theoffice
 
 # convert to an Arrow table for this demo
-office_table <- arrow_table(theoffice)
+the_office <- open_dataset("data/transcripts")
 
 # which character has the most lines in the show?
-office_table %>%
+the_office %>%
   group_by(character) %>%
   summarise(lines = n()) %>%
   arrange(desc(lines)) %>%
@@ -31,8 +30,8 @@ beets %>%
   collect()
 
 # which episode is the "same picture" meme from?
-office_table %>%
-  filter(str_detect(text, "the same picture")) %>%
+the_office %>%
+  filter(grepl("the same picture", text)) %>%
   collect()
 
 # which characters have most lines per season? let's plot it (with their full names)
@@ -44,9 +43,9 @@ plot_data <- function(data){
     scale_x_continuous(name = "Season", breaks =  c(1:9))
 }
 
-character_full_names <- arrow::read_csv_arrow("office_characters.csv", as_data_frame = FALSE)
+character_full_names <- arrow::read_csv_arrow("data/the_office_characters.csv", as_data_frame = FALSE)
 
-office_table %>%
+the_office %>%
   group_by(season, character) %>%
   summarise(n = n()) %>%
   right_join(character_full_names, by = c("character" = "forename")) %>%
