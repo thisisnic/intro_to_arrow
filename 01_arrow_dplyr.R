@@ -4,7 +4,7 @@ library(dplyr)
 # dataset - transcripts from The Office (US version)
 ?schrute::theoffice
 
-# convert to an Arrow table for this demo
+# read in from Parquet files
 the_office <- open_dataset("data/transcripts")
 
 the_office
