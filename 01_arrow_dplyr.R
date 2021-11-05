@@ -30,12 +30,12 @@ beets %>%
   select(character, text) %>%
   collect()
 
-# which episode is the same picture meme from?
+# which episode is the "same picture" meme from?
 office_table %>%
   filter(str_detect(text, "the same picture")) %>%
   collect()
 
-# which characters have most lines per season? let's plot it
+# which characters have most lines per season? let's plot it (with their full names)
 library(ggplot2)
 plot_data <- function(data){
   ggplot(aes(x = season, y = n, color = name), data = data) +
@@ -54,8 +54,3 @@ office_table %>%
   select(season, name, n) %>%
   collect() %>%
   plot_data()
-
-
-
-
-
