@@ -1,3 +1,6 @@
+# This tutorial demonstrates that you can use dplyr verbs as well as base R and
+# tidyverse functions in Arrow to query Arrow Datasets.
+
 library(arrow)
 library(dplyr)
 
@@ -7,6 +10,7 @@ library(dplyr)
 # read in from Parquet files
 the_office <- open_dataset("data/transcripts")
 
+# this is a FileSystemDataset - an Arrow dataset
 the_office
 
 # which character has the most lines in the show?
@@ -20,7 +24,7 @@ the_office %>%
 beets <- the_office %>%
   filter(str_detect(text, "beets"))
 
-# this is an in-memory dataset
+# this is an in-memory dataset - an Arrow dataset
 beets
 
 # how many rows? we can call functions like this as with a tibble
