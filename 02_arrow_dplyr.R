@@ -13,6 +13,9 @@ the_office <- open_dataset("data/transcripts")
 # this is a FileSystemDataset - an Arrow dataset
 the_office
 
+head(the_office) %>%
+  collect()
+
 # which character has the most lines in the show?
 the_office %>%
   group_by(character) %>%
@@ -51,6 +54,7 @@ plot_data <- function(data){
 
 character_full_names <- arrow::read_csv_arrow("data/the_office_characters.csv", as_data_frame = FALSE)
 
+# yay joins! since v 6.0.0
 the_office %>%
   group_by(season, character) %>%
   summarise(n = n()) %>%
@@ -59,3 +63,6 @@ the_office %>%
   select(season, name, n) %>%
   collect() %>%
   plot_data()
+
+# If this is completely underwhelming - that's the point!
+# We want things to "just work" in Arrow that you can already do with the tidyverse!

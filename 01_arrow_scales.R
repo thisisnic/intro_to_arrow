@@ -43,11 +43,15 @@ download_from_s3 <- function(already_downloaded = TRUE){
 download_from_s3(already_downloaded = TRUE)
 
 # For the live version on the tutorial, here's one I made earlier!
-data_path <- "../data/nyc-taxi/"
+data_path <- "/data/nyc-taxi/"
 
+files <- list.files(data_path, recursive = TRUE, full.names =  TRUE)
+files
 
 # In this case, we supply the partitioning to `open_dataset()`
 nyc_taxi <- open_dataset(data_path, partitioning = c("year", "month"))
+
+nyc_taxi
 
 # Calculate mean across last few years' data
 nyc_taxi %>%
@@ -55,7 +59,6 @@ nyc_taxi %>%
   collect()
 
 # So how big exactly *is* this data?
-files <- list.files(data_path, recursive = TRUE, full.names =  TRUE)
 
 total_bytes <- sum(map_dbl(files, file.size))
 total_gb <- total_bytes/1e9
@@ -76,6 +79,7 @@ nrow(nyc_taxi)
 # Since v 6.0.0 we can use group_by and summarise together
 # What is the mean fare by month since 2016? (add new groupby/summarise example here)
 nyc_taxi %>%
+  filter(month > 2016) %>%
   group_by(year, month) %>%
   summarise(mean_fare = mean(fare_amount)) %>%
   collect()
